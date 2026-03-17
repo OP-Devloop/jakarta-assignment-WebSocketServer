@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>WebSocket Chat</title>
 </head>
+
 <body>
-$END$
+
+<h2>WebSocket Chat</h2>
+
+<div id="messages"></div>
+
+<input type="text" id="msg"/>
+<button onclick="send()">Send message</button>
+
+<script>
+
+    const username = "Guest";
+
+    const socket = new WebSocket(
+        "http://desktop-u7l9meo:8080/websocket-server/chat"
+    );
+
+    socket.onopen = () => {
+        console.log("Connection open");
+    };
+
+    socket.onmessage = (event) => {
+        let div = document.getElementById("messages");
+        div.innerHTML += "<p>" + event.data + "</p>";
+    };
+
+    function send() {
+
+        let text = document.getElementById("msg").value;
+
+        socket.send(username + ": " + text);
+
+        document.getElementById("msg").value = "";
+    }
+
+</script>
+
 </body>
 </html>
